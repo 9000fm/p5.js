@@ -1,0 +1,6 @@
+*.png
+*.jpg
+*.mp4
+.DS_Store
+Thumbs.db
+shortcuts.txt
