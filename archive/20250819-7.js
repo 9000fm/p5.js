@@ -1,17 +1,9 @@
-var a = 100;
-
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
-  push();
-  fill(0,0,255, a)
-  noStroke();
-  rect(0, 0, width, height);
-  pop();
-
+  background(0,0,255);
 
 
   push();
