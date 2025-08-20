@@ -10,10 +10,11 @@ function draw() {
 
 
   push();
-  fill(0,0,255, a*8)
+  fill(0,0,255, a*3)
   noStroke();
   rect(0, 0, width, height);
   pop();
+
 
 
   push();
@@ -38,15 +39,8 @@ function draw() {
   ellipse(0,0,150,150)
   rotate(frameCount * 0.03 );
   fill(255);
-  ellipse(75,0,15,15)
+  ellipse(75,0,30,30)
 
-  translate(37.5,0);
-  noFill();
-  ellipse(0,0,75,75)
-  rotate(frameCount * 0.03 );
-  fill(255);
-  ellipse(37.5,0,10,10)
 
- 
   pop();
 }
