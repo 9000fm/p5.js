@@ -36,14 +36,14 @@ function draw() {
   translate(75,0);
   noFill();
   ellipse(0,0,150,150)
-  rotate(frameCount * 0.03 );
+  rotate(frameCount * 0.05 );
   fill(255);
-  ellipse(75,0,15,15)
+  ellipse(75,0,10,10)
 
   translate(37.5,0);
   noFill();
   ellipse(0,0,75,75)
-  rotate(frameCount * 0.03 );
+  rotate(frameCount * 0.08 );
   fill(255);
   ellipse(37.5,0,10,10)
 
