@@ -1,6 +1,6 @@
 # p5.visuals
 
-A personal collection of daily creative coding sketches built with [p5.js](https://p5js.org/). This repository serves as a practice space to track my progress over time.
+A personal collection of daily creative coding sketches built with [p5.js](https://p5js.org/).
 
 ## structure
 
