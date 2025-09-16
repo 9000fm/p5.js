@@ -1,5 +1,4 @@
-// p5.js. Grid based random sketch with 16x8 tiles.
-// Colors from the screenshot. Shapes sometimes span 2 tiles.
+// ENVOLTURA DE REGALO GAY
 
 let cols = 16;
 let rows = 8;
@@ -205,3 +204,4 @@ function keyPressed() {
     saveCanvas("grid-sketch", "png");
   }
 }
+  
