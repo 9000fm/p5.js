@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sqr.fm — viewer</title>
+  <script src="./libs/p5.min.js"></script>
+  <script src="./libs/p5.sound.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; background: #0a0a0a; overflow: hidden; }
+    canvas { display: block; }
+    .back { position: fixed; top: 1rem; left: 1rem; z-index: 100; color: #666; font-family: monospace; font-size: 0.8rem; text-decoration: none; padding: 0.5rem 1rem; border: 1px solid #333; border-radius: 4px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); transition: all 0.2s; }
+    .back:hover { color: #f59e0b; border-color: #f59e0b; }
+  </style>
+</head>
+<body>
+  <a href="gallery.html" class="back">← archive</a>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const sketch = params.get('sketch');
+    if (sketch) {
+      const s = document.createElement('script');
+      s.src = `./archive/${sketch}`;
+      document.body.appendChild(s);
+    }
+  </script>
+</body>
+</html>

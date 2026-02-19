@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sqr.fm — archive</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; color: #e5e5e5; font-family: 'SF Mono', 'Fira Code', monospace; }
+    header { padding: 2rem; text-align: center; border-bottom: 1px solid #222; }
+    header h1 { font-size: 2rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; }
+    header p { color: #666; font-size: 0.75rem; margin-top: 0.5rem; letter-spacing: 0.2em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2px; padding: 2px; }
+    .card { aspect-ratio: 1; background: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+    .card:hover { background: #1a1a1a; transform: scale(1.02); z-index: 1; }
+    .card .date { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; }
+    .card .index { font-size: 0.65rem; color: #444; margin-top: 0.25rem; }
+    .card:hover .date { color: #f59e0b; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>□ fm</h1>
+    <p>daily generative sketches</p>
+  </header>
+  <div class="grid" id="grid"></div>
+  <script>
+    // Archive files follow pattern: YYYYMMDD-N.js
+    // This reads from a generated manifest
+    fetch('archive/manifest.json')
+      .then(r => r.json())
+      .then(files => {
+        const grid = document.getElementById('grid');
+        files.reverse().forEach(f => {
+          const match = f.match(/^(\d{4})(\d{2})(\d{2})-(\d+)\.js$/);
+          if (!match) return;
+          const [, y, m, d, n] = match;
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `<div class="date">${y}.${m}.${d}</div><div class="index">#${n}</div>`;
+          card.onclick = () => {
+            // Load this sketch
+            window.location.href = `viewer.html?sketch=${f}`;
+          };
+          grid.appendChild(card);
+        });
+      })
+      .catch(() => {
+        document.getElementById('grid').innerHTML = '<p style="padding:2rem;color:#666">No archive manifest found. Run save-today.sh to archive sketches.</p>';
+      });
+  </script>
+</body>
+</html>
