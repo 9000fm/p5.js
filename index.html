@@ -1,17 +1,77 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>p5 daily</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="./libs/p5.min.js"></script>
-    <script src="./libs/p5.sound.min.js"></script>
-    <style>
-        html, body { height:100%; margin:0; background:#f2f2f2; }
-        canvas { display:block; }
-    </style>
+  <meta charset="utf-8" />
+  <title>sqr.fm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/src/workspace.css" />
 </head>
 <body>
-    <script src="./sketch.js"></script>
+  <div class="workspace">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1><span>sqr</span>.fm</h1>
+        <button class="btn-new" id="btn-new">+ new sketch</button>
+      </div>
+      <nav class="sketch-list" id="sketch-list"></nav>
+    </aside>
+
+    <!-- Editor panel -->
+    <section class="editor-panel">
+      <div class="editor-header">
+        <input class="editor-name" id="editor-name" type="text" value="New Sketch" spellcheck="false" autocomplete="off" />
+        <button class="btn-discard" id="btn-discard" title="Reset to template">&#8634;</button>
+        <button class="btn-save" id="btn-save">Save</button>
+        <div class="header-sep"></div>
+        <div class="btn-group">
+          <button class="btn-run" id="btn-run" title="Ctrl+Enter">&#9654; Run</button>
+          <button class="btn-autorun active" id="btn-autorun" title="Auto-run on edit (800ms debounce)">Auto</button>
+        </div>
+      </div>
+      <div class="editor-area">
+        <textarea id="editor" spellcheck="false" placeholder="// write your sketch here..."></textarea>
+      </div>
+      <div class="console-panel" id="console-panel">
+        <button class="console-toggle" id="console-toggle">
+          <span class="console-arrow">&#9662;</span> Console
+          <span class="console-badge" id="console-badge"></span>
+        </button>
+        <div class="console-output" id="console-output"></div>
+      </div>
+    </section>
+
+    <!-- Main area (canvas + toolbar) -->
+    <main class="main">
+      <div class="canvas-wrap" id="canvas-wrap">
+        <div class="canvas-flash" id="canvas-flash"></div>
+        <iframe id="sketch-frame" src="/runner.html?sketch=_wip"></iframe>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <button class="btn-capture" id="btn-screenshot"><kbd>S</kbd> Screenshot</button>
+          <button class="btn-capture" id="btn-gif"><kbd>G</kbd> GIF</button>
+          <button class="btn-capture" id="btn-video"><kbd>V</kbd> Video</button>
+        </div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-group canvas-size-group" id="canvas-size-group">
+          <label>W</label>
+          <input class="size-input" id="canvas-w" type="number" min="100" max="7680" step="1" />
+          <span class="size-x">&times;</span>
+          <label>H</label>
+          <input class="size-input" id="canvas-h" type="number" min="100" max="4320" step="1" />
+          <label class="auto-label">
+            <input type="checkbox" id="canvas-auto" checked />
+            Auto
+          </label>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script type="module" src="/src/workspace.js"></script>
 </body>
 </html>

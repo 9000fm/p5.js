@@ -1,6 +1,12 @@
+node_modules/
+dist/
+captures/
+public/manifest.json
+.env
 *.png
 *.jpg
 *.mp4
+*.webm
+*.gif
 .DS_Store
 Thumbs.db
-shortcuts.txt

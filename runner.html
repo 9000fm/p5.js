@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>sqr.fm — runner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="/libs/p5.min.js"></script>
+  <script src="/libs/p5.sound.min.js"></script>
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; background: #000; }
+    canvas { display: block; }
+
+    /* Capture HUD */
+    #capture-hud {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      color: #888;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    #capture-hud.visible { opacity: 1; }
+    #capture-hud .hint { background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; }
+    #capture-hud .recording {
+      background: rgba(255,0,0,0.8);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 4px;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    /* Flash effect for screenshot */
+    #flash {
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: opacity 0.1s;
+    }
+    #flash.active { opacity: 0.6; transition: none; }
+  </style>
+</head>
+<body>
+  <div id="flash"></div>
+  <div id="capture-hud">
+    <span class="hint" id="hud-hint">S: screenshot &nbsp; G: gif &nbsp; V: video</span>
+    <span class="recording" id="hud-recording" style="display:none">● REC</span>
+  </div>
+
+  <!-- Console intercept — must run before sketch loads -->
+  <script>
+  (function() {
+    if (window === window.top) return; // only when iframed
+    var MSG_TYPE = 'console-msg';
+    var orig = {
+      log:   console.log.bind(console),
+      warn:  console.warn.bind(console),
+      error: console.error.bind(console),
+      info:  console.info.bind(console),
+    };
+    function forward(level, args) {
+      var parts = [];
+      for (var i = 0; i < args.length; i++) {
+        try { parts.push(typeof args[i] === 'string' ? args[i] : JSON.stringify(args[i])); }
+        catch(e) { parts.push(String(args[i])); }
+      }
+      try {
+        window.parent.postMessage({ type: MSG_TYPE, level: level, text: parts.join(' ') }, '*');
+      } catch(e) {}
+    }
+    console.log   = function() { orig.log.apply(console, arguments);   forward('log',   arguments); };
+    console.info  = function() { orig.info.apply(console, arguments);  forward('log',   arguments); };
+    console.warn  = function() { orig.warn.apply(console, arguments);  forward('warn',  arguments); };
+    console.error = function() { orig.error.apply(console, arguments); forward('error', arguments); };
+    window.onerror = function(msg, src, line, col) {
+      forward('error', [msg + ' (' + (src||'') + ':' + line + ':' + col + ')']);
+    };
+    window.addEventListener('unhandledrejection', function(e) {
+      forward('error', ['Unhandled rejection: ' + (e.reason && e.reason.message || e.reason)]);
+    });
+  })();
+  </script>
+
+  <script type="module">
+    import { initCapture } from '/src/capture.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const sketch = params.get('sketch') || '_wip';
+    const iframed = window !== window.top;
+
+    // Hide HUD when running inside workspace iframe
+    if (iframed) {
+      document.getElementById('capture-hud').style.display = 'none';
+    }
+
+    // Load the sketch script (p5 global mode)
+    const script = document.createElement('script');
+    script.src = `/sketches/${sketch}.js`;
+    script.onload = () => {
+      // Give p5 a moment to initialize, then set up capture
+      setTimeout(() => initCapture(sketch), 500);
+    };
+    document.body.appendChild(script);
+
+    // Show HUD on mouse move, hide after idle (standalone only)
+    if (!iframed) {
+      const hud = document.getElementById('capture-hud');
+      let hideTimer;
+      document.addEventListener('mousemove', () => {
+        hud.classList.add('visible');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => hud.classList.remove('visible'), 3000);
+      });
+    }
+  </script>
+</body>
+</html>

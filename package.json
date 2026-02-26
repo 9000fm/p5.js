@@ -1,0 +1,21 @@
+{
+  "name": "sqr-fm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "sqr.fm — creative coding workflow tool",
+  "scripts": {
+    "dev": "npm run manifest && vite",
+    "build": "npm run manifest && vite build",
+    "manifest": "node scripts/manifest.js",
+    "save": "node scripts/save.js",
+    "share": "node scripts/share.js",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "gif.js": "^0.2.0"
+  }
+}
